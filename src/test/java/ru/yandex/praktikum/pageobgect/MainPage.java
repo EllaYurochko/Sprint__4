@@ -1,6 +1,11 @@
 package ru.yandex.praktikum.pageobgect;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage {
     private final WebDriver webDriver;
@@ -70,80 +75,62 @@ public class MainPage {
         webDriver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
-    public void clickOrderButton() {
-        webDriver.findElement(orderButton).click();
+    public void clickOrderButton(boolean isOrderButton) {
+        if (isOrderButton) {
+            webDriver.findElement(orderButton).click();
+        } else {
+            ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView();", webDriver.findElement(orderButtonOnMiddlePage));
+            webDriver.findElement(orderButtonOnMiddlePage).click();
+        }
     }
 
-    public void clickOrderButtonOnMiddlePage() {
-        webDriver.findElement(orderButtonOnMiddlePage).click();
+    public void scrollToQuestion(By dropQuestion) {
+        WebElement dropDownQuestionElement = webDriver.findElement(dropQuestion);
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView();", dropDownQuestionElement);
+        new WebDriverWait(webDriver, 3)
+                .until(ExpectedConditions.elementToBeClickable(dropDownQuestionElement));
     }
 
-
-    public void clickDropDownOneQuestion() {
-        webDriver.findElement(dropDownOneQuestion).click();
-    }
-
-    public String getTextDropDownOneQuestion() {
-        return webDriver.findElement(textDropDownOneQuestion).getText();
-    }
-
-    public void clickDropDownTwoQuestion() {
-        webDriver.findElement(dropDownTwoQuestion).click();
-    }
-
-    public String getTextDropDownTwoQuestion() {
-        return webDriver.findElement(textDropDownTwoQuestion).getText();
-    }
-
-    public void clickDropDownThreeQuestion() {
-        webDriver.findElement(dropDownThreeQuestion).click();
-    }
-
-    public String getTextDropDownThreeQuestion() {
-        return webDriver.findElement(textDropDownThreeQuestion).getText();
-    }
-
-    public void clickDropDownFourQuestion() {
-        webDriver.findElement(dropDownFourQuestion).click();
-    }
-
-    public String getTextDropDownFourQuestion() {
-        return webDriver.findElement(textDropDownFourQuestion).getText();
-    }
-
-    public void clickDropDownFiveQuestion() {
-        webDriver.findElement(dropDownFiveQuestion).click();
-    }
-
-    public String getTextDropDownFiveQuestion() {
-        return webDriver.findElement(textDropDownFiveQuestion).getText();
-    }
-
-    public void clickDropDownSixQuestion() {
-        webDriver.findElement(dropDownSixQuestion).click();
-    }
-
-    public String getTextDropDownSixQuestion() {
-        return webDriver.findElement(textDropDownSixQuestion).getText();
-    }
-
-    public void clickDropDownSevenQuestion() {
-        webDriver.findElement(dropDownSevenQuestion).click();
-    }
-
-    public String getTextDropDownSevenQuestion() {
-        return webDriver.findElement(textDropDownSevenQuestion).getText();
-    }
-
-    public void clickDropDownEightQuestion() {
-        webDriver.findElement(dropDownEightQuestion).click();
-    }
-
-    public String getTextDropDownEightQuestion() {
-        return webDriver.findElement(textDropDownEightuestion).getText();
+    public String clickDropDownQuestion(String dropDownQuestion) {
+        if ("Сколько это стоит? И как оплатить?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownOneQuestion);
+            webDriver.findElement(dropDownOneQuestion).click();
+            return webDriver.findElement(textDropDownOneQuestion).getText();
+        } else if ("Хочу сразу несколько самокатов! Так можно?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownTwoQuestion);
+            webDriver.findElement(dropDownTwoQuestion).click();
+            return webDriver.findElement(textDropDownTwoQuestion).getText();
+        } else if ("Как рассчитывается время аренды?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownThreeQuestion);
+            webDriver.findElement(dropDownThreeQuestion).click();
+            return webDriver.findElement(textDropDownThreeQuestion).getText();
+        } else if ("Можно ли заказать самокат прямо на сегодня?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownFourQuestion);
+            webDriver.findElement(dropDownFourQuestion).click();
+            return webDriver.findElement(textDropDownFourQuestion).getText();
+        } else if ("Можно ли продлить заказ или вернуть самокат раньше?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownFiveQuestion);
+            webDriver.findElement(dropDownFiveQuestion).click();
+            return webDriver.findElement(textDropDownFiveQuestion).getText();
+        } else if ("Вы привозите зарядку вместе с самокатом?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownSixQuestion);
+            webDriver.findElement(dropDownSixQuestion).click();
+            return webDriver.findElement(textDropDownSixQuestion).getText();
+        } else if ("Можно ли отменить заказ?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownSevenQuestion);
+            webDriver.findElement(dropDownSevenQuestion).click();
+            return webDriver.findElement(textDropDownSevenQuestion).getText();
+        } else if ("Я жизу за МКАДом, привезёте?".equals(dropDownQuestion)) {
+            scrollToQuestion(dropDownEightQuestion);
+            webDriver.findElement(dropDownEightQuestion).click();
+            return webDriver.findElement(textDropDownEightuestion).getText();
+        } else {
+            throw new IllegalArgumentException("Вопрос не найден: " + dropDownQuestion);
+        }
     }
 
     public void clickButtonCookies() {
         webDriver.findElement(buttonCookies).click();
     }
+
 }

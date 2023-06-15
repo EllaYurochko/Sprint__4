@@ -1,11 +1,10 @@
 package ru.yandex.praktikum.pageobgect;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
-
 public class OrderPage {
-
     private final WebDriver webDriver;
     //локатор поля ввода "Имя" на странице заказа
     private By orderNameField = By.xpath("//input[@placeholder='* Имя']");
@@ -95,10 +94,6 @@ public class OrderPage {
 
     public void enterOrderTime(String text) {
         webDriver.findElement(orderTime).sendKeys(text, Keys.ENTER);
-    }
-
-    public void clickOrderTime() {
-        webDriver.findElement(orderTimeFull).click();
     }
 
     public void clickOrderRentalPeriod() {
